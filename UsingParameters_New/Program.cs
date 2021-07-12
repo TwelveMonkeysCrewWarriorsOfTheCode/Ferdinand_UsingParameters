@@ -12,7 +12,7 @@ namespace UsingParameters_New
             time2 = new Time(3, 15);
             int TimeInt = 120;
             int coefficient = 2;
-            float timeFloat= 12.5215354f;
+            float timeFloat = 12.5215354f;
 
             Console.WriteLine("++++++++++++++++ Operators overloading +++++++++++++++++++++");
 
@@ -36,9 +36,6 @@ namespace UsingParameters_New
             Console.WriteLine($"Comparaison: {time1} >= {time2} --> {time1 >= time2}");
             Console.WriteLine($"Comparaison: {time1} == {time2} --> {time1 == time2}");
             Console.WriteLine($"Comparaison: {time1} != {time2} --> {time1 != time2}");
-            //Console.WriteLine(tMinute.TotalMinutes);
-            //Console.WriteLine(time1.TotalMinutes);
-            //Console.WriteLine(time2.TotalMinutes);
         }
     }
 }

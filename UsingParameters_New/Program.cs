@@ -7,13 +7,19 @@ namespace UsingParameters_New
     {
         static void Main(string[] args)
         {
+            Time t1 = new(150);
+            Time t2 = new(200);
+            Console.WriteLine(t1 + t2);
+            
             Time time1, time2;
             time1 = new Time(2, 30);
             time2 = new Time(3, 15);
+            //Time t3 = new Time(time2);
+            //Console.WriteLine(t3);
             int TimeInt = 120;
-            int coefficient = 2;
+            int coefficient = 5;
             float timeFloat = 12.5215354f;
-
+            
             Console.WriteLine("++++++++++++++++ Operators overloading +++++++++++++++++++++");
 
             Console.WriteLine($"{time1} + {time2} = {time1 + time2}");
@@ -34,7 +40,7 @@ namespace UsingParameters_New
             Console.WriteLine($"Comparaison: {time1} > {time2} --> {time1 > time2}");
             Console.WriteLine($"Comparaison: {time1} <= {time2} --> {time1 <= time2}");
             Console.WriteLine($"Comparaison: {time1} >= {time2} --> {time1 >= time2}");
-            Console.WriteLine($"Comparaison: {time1} == {time2} --> {time1 == time2}");
+            Console.WriteLine($"Comparaison: {time1} == {time2} --> {time1.Equals(time2)}");
             Console.WriteLine($"Comparaison: {time1} != {time2} --> {time1 != time2}");
         }
     }

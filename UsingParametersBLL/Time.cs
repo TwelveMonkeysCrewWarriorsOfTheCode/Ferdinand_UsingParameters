@@ -11,16 +11,29 @@ namespace UsingParametersBLL
             get { return m_Hour; }
             set { m_Hour = value; }
         }
-
         private int m_Minute;
         public int Minute
         {
             get { return m_Minute; }
             set { m_Minute = value; }
-        } 
+        }
         #endregion
 
-        #region Constructors       
+        #region Constructors
+        private Time(Time pTime)
+        {
+            if (pTime != null)
+            {
+                m_Hour = pTime.Hour;
+                m_Minute = pTime.Minute;
+            }
+        }
+        public Time(int pIntTime) : this(GenerateTimeInHourMinute(pIntTime))
+        {
+        }
+        public Time(float pFloatTime) : this((int)(pFloatTime * m_COEFFMINUTES) / m_COEFFMINUTES, (int)(pFloatTime * m_COEFFMINUTES) % m_COEFFMINUTES)
+        {
+        }
         public Time(int pHour, int pMinute)
         {
             m_Hour = pHour;
@@ -40,14 +53,23 @@ namespace UsingParametersBLL
 
         #region Overloading conversion operators
 
-        public static explicit operator Time(int PIntToTime) => new Time(PIntToTime / m_COEFFMINUTES, PIntToTime % m_COEFFMINUTES);
+        public static explicit operator Time(int PIntToTime) => GenerateTimeInHourMinute(PIntToTime);
 
-        public static explicit operator int(Time pTime1) => pTime1.Hour * m_COEFFMINUTES + pTime1.Minute;
-
-        public static explicit operator float(Time pTime1) => (float)((int)pTime1 / m_COEFFMINUTES);
-
-        public static explicit operator Time(float pTimeFloat) => new Time((int)(pTimeFloat * m_COEFFMINUTES) / m_COEFFMINUTES,
-            (int)(pTimeFloat * m_COEFFMINUTES) % m_COEFFMINUTES);
+        public static explicit operator int(Time pTimeToInt)
+        {
+            Time myTimeToInt = new(pTimeToInt);
+            return TimeToMinute(myTimeToInt);
+        }
+        public static explicit operator float(Time pTimeToFloat)
+        {
+            Time myTimeToFloat = new(pTimeToFloat);
+            return (float)TimeToMinute(myTimeToFloat) / m_COEFFMINUTES;
+        }
+        public static explicit operator Time(float pTimeFloat)
+        {
+            Time myFloatTime = new(pTimeFloat);
+            return new Time(myFloatTime.m_Hour, myFloatTime.m_Minute);
+        }
         #endregion
 
         #region Overloading relational operators
@@ -55,12 +77,10 @@ namespace UsingParametersBLL
         public static bool operator >(Time pTime1, Time pTime2) => (int)pTime1 > (int)pTime2;
         public static bool operator <=(Time pTime1, Time pTime2) => (int)pTime1 <= (int)pTime2;
         public static bool operator >=(Time pTime1, Time pTime2) => (int)pTime1 >= (int)pTime2;
-
-        public static bool operator ==(Time pTime1, Time pTime2) => (int)pTime1 == (int)pTime2;
-        public static bool operator !=(Time pTime1, Time pTime2) => (int)pTime1 != (int)pTime2;
         #endregion
 
         #region Methods
+        private static int TimeToMinute(Time pTime) => pTime.m_Hour * m_COEFFMINUTES + pTime.m_Minute;
         private static Time GenerateTimeInHourMinute(int pTotalMinutes) => new Time(pTotalMinutes / m_COEFFMINUTES, pTotalMinutes % m_COEFFMINUTES);
 
         public override string ToString() => $"{Hour:##00}:{Minute:00} min";
@@ -71,11 +91,10 @@ namespace UsingParametersBLL
         }
         public override bool Equals(object PTime)
         {
-            var myTime = (Time)PTime;
-            if (myTime.Hour == this.Hour && myTime.Minute == this.Minute)
-                return true;
-            else
-                return false;
+            if (PTime == null) return false;
+            Time myTime = (Time)PTime;
+            if (myTime == null) return false;
+            return myTime.Hour == this.Hour && myTime.Minute == this.Minute;
         }
         #endregion
     }
